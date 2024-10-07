@@ -3,22 +3,17 @@ const archiver = require('archiver');
 const fs = require('fs');
 const path = require('path');
 const cron = require('cron');
+require('dotenv').config();
 const app = express();
-const port = 8742;
 
-
-const folderPath = path.join(__dirname, '/');
-
-
+const port = process.env.PORT || 8742;
+const folderPath = path.resolve(__dirname, process.env.FOLDER_PATH || './');
 const zipFilePath = path.join(__dirname, 'backup.zip');
-
 
 let isZipping = false;
 
-
 function zipFolder(sourceFolder, outputFilePath) {
     return new Promise((resolve, reject) => {
-     
         if (fs.existsSync(outputFilePath)) {
             fs.unlinkSync(outputFilePath);
             console.log('Existing backup.zip file deleted.');
@@ -39,8 +34,6 @@ function zipFolder(sourceFolder, outputFilePath) {
         });
 
         archive.pipe(output);
-
-  
         archive.glob('**/*', {
             cwd: sourceFolder,
             ignore: ['node_modules/**'], 
@@ -49,7 +42,6 @@ function zipFolder(sourceFolder, outputFilePath) {
         archive.finalize();
     });
 }
-
 
 const job = new cron.CronJob('0 * * * *', () => {
     console.log('Running cron job: Zipping folder');
@@ -70,9 +62,7 @@ const job = new cron.CronJob('0 * * * *', () => {
 job.start();
 
 app.get('/download', (req, res) => {
-
     if (isZipping) {
-       
         res.status(503).send('The file is being zipped, please try again later.');
     } else if (!fs.existsSync(zipFilePath)) {
         zipFolder(folderPath, zipFilePath)
