@@ -1,0 +1,33 @@
+{
+  "name": "czlink",
+  "version": "1.0.0",
+  "description": "A backup tool for your pc ",
+  "main": "index.js",
+  "repository": {
+    "url": "https://github.com/coneiz/czlink-npm.git"
+  },
+  "scripts": {
+    "test": "node server"
+  },
+  "keywords": [
+    "coneiz",
+    "backup",
+    "zipper",
+    "zip",
+    "net",
+    "netlink",
+    "link"
+  ],
+  "author": "coneiz",
+  "license": "MIT",
+  "dependencies": {
+    "archiver": "^7.0.1",
+    "colors": "^1.4.0",
+    "cors": "^2.8.5",
+    "cron": "^3.1.7",
+    "ejs": "^3.1.10",
+    "express": "^4.21.0",
+    "node-cron": "^3.0.3",
+    "uuid": "^10.0.0"
+  }
+}
